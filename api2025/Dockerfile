@@ -20,6 +20,4 @@ RUN dotnet publish "api2025.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:U
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN mkdir -p /app/wwwroot/reports && chmod -R 777 /app/wwwroot/reports
-
 ENTRYPOINT ["dotnet", "api2025.dll"]
