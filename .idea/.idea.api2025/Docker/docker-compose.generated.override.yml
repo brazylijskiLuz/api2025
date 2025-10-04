@@ -1,0 +1,23 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.8"
+services:
+  api2025:
+    build:
+      context: "C:\\Users\\rzeja\\api2025"
+      dockerfile: "api2025/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/api2025.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/api2025.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "api2025:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\rzeja\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\rzeja\\api2025\\api2025:/app:rw"
+    - "C:\\Users\\rzeja\\api2025:/src:rw"
+    working_dir: "/app"
