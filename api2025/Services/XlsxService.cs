@@ -1,3 +1,4 @@
+using api2025.Entity;
 using ClosedXML.Excel;
 
 namespace api2025.Services;
@@ -22,9 +23,12 @@ public class XlsxService : IXlsxService
 
         worksheet.Cell(1, 2).Value = DateTime.Now;
         worksheet.Cell(2, 2).Value = request.ExpectedPension;
-        worksheet.Cell(3, 2).Value = request.Sex == 0
-            ? "Mężczyzna"
-            : (request.Sex == 1 ? "Kobieta" : throw new Exception("Niepoprawna wartość płci"));
+        worksheet.Cell(3, 2).Value = request.Sex switch
+        {
+            1 => "Mężczyzna",
+            2 => "Kobieta",
+            _ => throw new Exception("Niepoprawna wartość płci")
+        };
         worksheet.Cell(4, 2).Value = request.SalaryAmount;
         worksheet.Cell(5, 2).Value = request.ConsideredSickLeave ? "Tak" : "Nie";
         worksheet.Cell(6, 2).Value = request.AccountBalance;
@@ -41,7 +45,7 @@ public class XlsxService : IXlsxService
         return Task.FromResult("api.wnek.cc/" + name);
     }
 
-    public Task<string> GenerateXlsxReportsFromDateToDateAsync(List<ReportRequest> request,
+    public Task<string> GenerateXlsxReportsFromDateToDateAsync(List<Report> request,
         CancellationToken cancellationToken)
     {
         using var workbook = new XLWorkbook();
@@ -88,8 +92,8 @@ public class XlsxService : IXlsxService
         wsSummary.Cell(row++, 2).Value = request.Max(x => x.AccountBalance + x.SubAccountBalance);
 
         // 🔹 Statystyki płci
-        int women = request.Count(x => x.Sex == 0);
-        int men = request.Count(x => x.Sex == 1);
+        int women = request.Count(x => x.Sex.Id == 0);
+        int men = request.Count(x => x.Sex.Id == 1);
 
         wsSummary.Cell(row++, 1).Value = "Statystyki według płci";
         wsSummary.Cell(row, 1).Value = "Kobiety (liczba)";
@@ -155,7 +159,7 @@ public class XlsxService : IXlsxService
         foreach (var r in request)
         {
             wsDetails.Cell(dRow, 1).Value = index++;
-            wsDetails.Cell(dRow, 2).Value = r.Sex == 0 ? "Kobieta" : "Mężczyzna";
+            wsDetails.Cell(dRow, 2).Value = r.Sex.Id == 0 ? "Kobieta" : "Mężczyzna";
             wsDetails.Cell(dRow, 3).Value = r.SalaryAmount;
             wsDetails.Cell(dRow, 4).Value = r.ExpectedPension;
             wsDetails.Cell(dRow, 5).Value = r.RealPension;

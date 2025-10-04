@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using api2025.Repositories;
 using api2025.Services;
 using EntityArchitect.CRUD;
 using EntityArchitect.CRUD.Actions;
@@ -15,6 +16,7 @@ builder.Services.UseActions(typeof(Program).Assembly);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IXlsxService, XlsxService>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 var app = builder.Build();
 
