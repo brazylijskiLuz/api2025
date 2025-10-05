@@ -14,5 +14,6 @@ SELECT
 FROM report r
 LEFT JOIN post_code pc ON r.postal_code_id = pc.id
 LEFT JOIN province p ON pc.province_id = p.id
+WHERE pc.province_id = @ProvinceId:GUID
 
  
