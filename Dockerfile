@@ -1,11 +1,21 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+
+RUN apt-get update && apt-get install -y \
+    libfontconfig1 \
+    libfreetype6 \
+    libharfbuzz0b \
+    libx11-6 \
+    libxext6 \
+    fonts-dejavu-core \
+    fonts-liberation \
+ && rm -rf /var/lib/apt/lists/*
+
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-RUN apt install -y fonts-dejavu-core fonts-liberation
 
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
