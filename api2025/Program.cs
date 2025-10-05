@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using api2025.Repositories;
 using api2025.Services;
+using api2025.Services.PdfServices;
 using EntityArchitect.CRUD;
 using EntityArchitect.CRUD.Actions;
 using EntityArchitect.CRUD.Authorization;
@@ -18,6 +19,7 @@ builder.Services.UseActions(typeof(Program).Assembly);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IXlsxService, XlsxService>();
+builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<IPostCodeRepository, PostCodeRepository>();
 

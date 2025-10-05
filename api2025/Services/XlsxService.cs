@@ -149,7 +149,7 @@ public class XlsxService : IXlsxService
         var headers = new[]
         {
             "Lp", "Płeć", "Wiek", "Pensja", "Oczekiwana emerytura", "Urealniona emerytura",
-            "Stan konta", "Subkonto", "Chorobowe", "Data Generowania", "Kod pocztowy"
+            "Stan konta", "Subkonto", "Chorobowe", "Województwo", "Kod pocztowy","Data Generowania"
         };
 
         for (var i = 0; i < headers.Length; i++)
@@ -169,8 +169,10 @@ public class XlsxService : IXlsxService
             wsDetails.Cell(dRow, 7).Value = r.AccountBalance;
             wsDetails.Cell(dRow, 8).Value = r.SubAccountBalance;
             wsDetails.Cell(dRow, 9).Value = r.ConsideredSickLeave ? "Tak" : "Nie";
-            wsDetails.Cell(dRow, 10).Value = r.UsageTime;
+            wsDetails.Cell(dRow, 10).Value =  r.PostalCode?.Province.Name;
             wsDetails.Cell(dRow++, 11).Value = r.PostalCode?.Code ?? "-";
+            wsDetails.Cell(dRow, 12).Value = r.UsageTime;
+
         }
 
         wsDetails.Columns().AdjustToContents();

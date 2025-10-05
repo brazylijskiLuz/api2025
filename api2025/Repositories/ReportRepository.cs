@@ -11,5 +11,6 @@ public class ReportRepository(ApplicationDbContext context) : Repository<Entity.
         CancellationToken cancellationToken) => 
         context.Set<Report>()
             .Include(c => c.PostalCode)
+            .ThenInclude(c => c.Province)
             .Where(r => (!from.HasValue || r.UsageTime >= from) && (!to.HasValue || r.UsageTime <= to)).ToListAsync(cancellationToken: cancellationToken);
 }

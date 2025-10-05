@@ -3,6 +3,7 @@ using api2025.Entity;
 using api2025.Enums;
 using api2025.Repositories;
 using api2025.Services;
+using api2025.Services.PdfServices;
 using EntityArchitect.CRUD.CustomEndpoints;
 using EntityArchitect.CRUD.Entities.Context;
 using EntityArchitect.CRUD.Enumerations;
@@ -10,10 +11,10 @@ using EntityArchitect.CRUD.Results.Abstracts;
 
 namespace api2025.Features;
 
-public class ReportFeature(IReportRepository repository, IPostCodeRepository postCodeRepository, IUnitOfWork unitOfWork, IXlsxService xlsxService) :  CustomEndpoint<Report>
+public class ReportFeature(IPdfService pdfService, IReportRepository repository, IPostCodeRepository postCodeRepository, IUnitOfWork unitOfWork, IXlsxService xlsxService) :  CustomEndpoint<Report>
 {
     [CustomEndpoint("POST", "create")]
-    public async Task<Result<string>> SaveReport(ReportRequest request, CancellationToken cancellationToken)
+    public async Task<Result<FileResult>> SaveReport(ReportRequest request, CancellationToken cancellationToken)
     {
         PostCode? postCode = null;
         if (request.PostalCode is not null)
@@ -38,8 +39,13 @@ public class ReportFeature(IReportRepository repository, IPostCodeRepository pos
         
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var filePath = await xlsxService.GenerateXlsxReportAsync(request, cancellationToken);
-        return filePath!;
+        var xlsxFile = await xlsxService.GenerateXlsxReportAsync(request, cancellationToken);
+        var pdfFile = await pdfService.CreatePdfReport(request, cancellationToken);
+        return new FileResult
+        {
+            PdfFile = pdfFile,
+            XlsxFile = xlsxFile
+        };
     }
     
     [CustomEndpoint("POST", "report-from-to")]

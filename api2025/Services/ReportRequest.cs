@@ -1,3 +1,5 @@
+using api2025.Services.PdfServices;
+
 namespace api2025.Services;
 
 public class ReportRequest
@@ -12,4 +14,6 @@ public class ReportRequest
     public decimal RealPension { get; set; }
     public int Age { get; set; }
     public string? PostalCode { get; set; } = null;
+    
+    public List<PdfChartModel>? Data { get; set; } = new();
 }
