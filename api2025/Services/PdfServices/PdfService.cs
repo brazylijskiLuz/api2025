@@ -108,7 +108,7 @@ public class PdfService : IPdfService
                 col.Item().PaddingTop(6).Text("Dane podstawowe").SemiBold().FontSize(12);
                 Row("Wiek", $"{s.Age} lat");
                 Row("Płeć", s.Sex == Sex.Male.Id ? "mężczyzna" : "kobieta");
-                Row("Data użycia kalkulatora", DateTime.Now.ToString("yyyy-MM-dd HH:mm", pl));
+                Row("Data użycia kalkulatora", DateTime.UtcNow.AddHours(2).ToString("yyyy-MM-dd HH:mm", pl));
 
                 // 🔹 Finanse
                 col.Item().PaddingTop(6).Text("Dane finansowe").SemiBold().FontSize(12);
