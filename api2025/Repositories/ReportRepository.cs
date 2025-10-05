@@ -7,10 +7,14 @@ namespace api2025.Repositories;
 
 public class ReportRepository(ApplicationDbContext context) : Repository<Entity.Report>(context), IReportRepository
 {
-    public Task<List<Report>> GetReportsFromDateToDateAsync(DateTime? from, DateTime? to,
+    public Task<List<Report>> GetReportsFromDateToDateAsync(DateTime? from, DateTime? to, Guid? provinceId,
         CancellationToken cancellationToken) => 
         context.Set<Report>()
             .Include(c => c.PostalCode)
             .ThenInclude(c => c.Province)
-            .Where(r => (!from.HasValue || r.UsageTime >= from) && (!to.HasValue || r.UsageTime <= to)).ToListAsync(cancellationToken: cancellationToken);
+            .Where(r => 
+                (!from.HasValue || r.UsageTime >= from) && 
+                (!to.HasValue || r.UsageTime <= to) &&
+                (!provinceId.HasValue || r.PostalCode.Province.Id == provinceId.Value)
+                ).ToListAsync(cancellationToken: cancellationToken);
 }

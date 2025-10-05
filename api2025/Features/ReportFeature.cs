@@ -59,7 +59,7 @@ public class ReportFeature(IPdfService pdfService, IReportRepository repository,
             ? DateTime.SpecifyKind(toDate, DateTimeKind.Utc)
             : (DateTime?)null;
         
-        var reports = await repository.GetReportsFromDateToDateAsync(from, to, cancellationToken);
+        var reports = await repository.GetReportsFromDateToDateAsync(from, to, request.ProvinceId, cancellationToken);
         if(reports.Count == 0)
             return Result.Failure<string>(new Error(HttpStatusCode.NotFound, "No reports found in the given date range."));
 

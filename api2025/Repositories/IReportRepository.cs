@@ -5,6 +5,6 @@ namespace api2025.Repositories;
 
 public interface IReportRepository : IRepository<Entity.Report>
 {
-    public Task<List<Report>> GetReportsFromDateToDateAsync(DateTime? from, DateTime? to,
+    public Task<List<Report>> GetReportsFromDateToDateAsync(DateTime? from, DateTime? to, Guid? provinceId,
         CancellationToken cancellationToken);
 }
