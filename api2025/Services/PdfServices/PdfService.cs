@@ -17,8 +17,7 @@ public class PdfService : IPdfService
         var data = reportRequest.Data;
         var name = "/reports/" + Guid.NewGuid() + ".pdf";
 
-        if (data == null || data.Count == 0)
-            throw new ArgumentException("Lista scenariuszy jest pusta.");
+        data ??= new List<PdfChartModel>();
         
 
         // wykres jako obraz w pamięci
