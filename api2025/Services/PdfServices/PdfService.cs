@@ -41,6 +41,9 @@ public class PdfService : IPdfService
                     col.Item().PaddingBottom(10).Element(StanAktualnyBox(reportRequest, CultureInfo.InvariantCulture));
                     col.Item().PaddingBottom(6).LineHorizontal(0.75f);
                     
+                    if(data is null || data.Count == 0)
+                        return;
+                    
                     col.Item().PaddingTop(20).Text("Wykres: emerytura netto w czasie").SemiBold().FontSize(12);
                     col.Item().PaddingTop(8).AlignCenter().Image(chartStream.ToArray());
                     col.Item().PaddingVertical(6).LineHorizontal(0.5f);
@@ -140,6 +143,13 @@ public class PdfService : IPdfService
 
         plt.Axes.Bottom.Label.Text = "Rok emerytury";
         plt.Axes.Left.Label.Text = "Kwota [zł]";
+        plt.Legend.Location = ScottPlot.Alignment.UpperRight;
+        plt.Legend.Orientation = ScottPlot.Orientation.Vertical;
+        plt.Legend.BackgroundColor = ScottPlot.Colors.White;
+        plt.Legend.OutlineColor = ScottPlot.Colors.Black;
+        plt.Legend.FontSize = 12;
+
+        plt.Axes.Frame(true);
         plt.Title("Emerytura NETTO – nominalna vs urealniona");
         plt.ShowLegend();
 
