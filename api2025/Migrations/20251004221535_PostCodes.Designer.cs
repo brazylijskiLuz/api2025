@@ -3,6 +3,7 @@ using System;
 using EntityArchitect.CRUD.Entities.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api2025.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251004221535_PostCodes")]
+    partial class PostCodes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,9 +108,9 @@ namespace api2025.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("pension");
 
-                    b.Property<Guid?>("PostalCodeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("postal_code_id");
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("text")
+                        .HasColumnName("postal_code");
 
                     b.Property<decimal>("RealPension")
                         .HasColumnType("numeric")
@@ -136,9 +139,6 @@ namespace api2025.Migrations
                     b.HasKey("Id")
                         .HasName("pk_report");
 
-                    b.HasIndex("PostalCodeId")
-                        .HasDatabaseName("ix_report_postal_code_id");
-
                     b.ToTable("report", (string)null);
                 });
 
@@ -152,21 +152,6 @@ namespace api2025.Migrations
                         .HasConstraintName("fk_post_code_province_province_id");
 
                     b.Navigation("Province");
-                });
-
-            modelBuilder.Entity("api2025.Entity.Report", b =>
-                {
-                    b.HasOne("api2025.Entity.PostCode", "PostalCode")
-                        .WithMany("Reports")
-                        .HasForeignKey("PostalCodeId")
-                        .HasConstraintName("fk_report_post_code_postal_code_id");
-
-                    b.Navigation("PostalCode");
-                });
-
-            modelBuilder.Entity("api2025.Entity.PostCode", b =>
-                {
-                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("api2025.Entity.Province", b =>

@@ -114,7 +114,7 @@ public class XlsxService : IXlsxService
         // 🔹 Grupy po kodzie pocztowym
         wsSummary.Cell(row++, 1).Value = "Podział po kodach pocztowych";
         var postalGroups = request
-            .Where(x => !string.IsNullOrEmpty(x.PostalCode))
+            .Where(x => !string.IsNullOrEmpty(x.PostalCode?.Code ?? ""))
             .GroupBy(x => x.PostalCode!)
             .Select(g => new
             {
@@ -133,7 +133,7 @@ public class XlsxService : IXlsxService
 
         foreach (var g in postalGroups)
         {
-            wsSummary.Cell(row, 1).Value = g.Postal;
+            wsSummary.Cell(row, 1).Value = g.Postal?.Code ?? "";
             wsSummary.Cell(row, 2).Value = g.Count;
             wsSummary.Cell(row, 3).Value = g.AvgSalary;
             wsSummary.Cell(row++, 4).Value = g.AvgExpected;
@@ -166,7 +166,7 @@ public class XlsxService : IXlsxService
             wsDetails.Cell(dRow, 6).Value = r.AccountBalance;
             wsDetails.Cell(dRow, 7).Value = r.SubAccountBalance;
             wsDetails.Cell(dRow, 8).Value = r.ConsideredSickLeave ? "Tak" : "Nie";
-            wsDetails.Cell(dRow++, 9).Value = r.PostalCode ?? "-";
+            wsDetails.Cell(dRow++, 9).Value = r.PostalCode?.Code ?? "-";
         }
 
         wsDetails.Columns().AdjustToContents();

@@ -9,5 +9,7 @@ public class ReportRepository(ApplicationDbContext context) : Repository<Entity.
 {
     public Task<List<Report>> GetReportsFromDateToDateAsync(DateTime? from, DateTime? to,
         CancellationToken cancellationToken) => 
-        context.Set<Report>().Where(r => (!from.HasValue || r.UsageTime >= from) && (!to.HasValue || r.UsageTime <= to)).ToListAsync(cancellationToken: cancellationToken);
+        context.Set<Report>()
+            .Include(c => c.PostalCode)
+            .Where(r => (!from.HasValue || r.UsageTime >= from) && (!to.HasValue || r.UsageTime <= to)).ToListAsync(cancellationToken: cancellationToken);
 }

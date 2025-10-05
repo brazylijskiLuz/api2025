@@ -1,5 +1,6 @@
 using api2025.Enums;
 using EntityArchitect.CRUD.Attributes.CrudAttributes;
+using EntityArchitect.CRUD.Entities.Attributes;
 
 namespace api2025.Entity;
 
@@ -15,5 +16,7 @@ public class Report : EntityArchitect.CRUD.Entities.Entities.Entity
     public decimal SubAccountBalance { get; set; }
     public decimal Pension { get; set; }
     public decimal RealPension { get; set; }
-    public string? PostalCode { get; set; } 
+    
+    [OneToMany<PostCode>(nameof(PostCode.Reports))]
+    public PostCode? PostalCode { get; set; } 
 }

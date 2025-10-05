@@ -17,6 +17,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IXlsxService, XlsxService>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IPostCodeRepository, PostCodeRepository>();
 
 var app = builder.Build();
 

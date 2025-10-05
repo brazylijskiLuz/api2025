@@ -9,5 +9,8 @@ SELECT
     r.account_balance AS AccountBalance:DOUBLE,
     r.pension AS Pension:DOUBLE,
     r.real_pension AS RealPension:DOUBLE,
-    r.postal_code AS PostalCode:STRING
-FROM report r;
+    pc.code AS PostalCode:STRING,
+    p.name AS ProvinceName:STRING
+FROM report r
+LEFT JOIN post_code pc ON r.postal_code_id = pc.id
+LEFT JOIN province p ON pc.province_id = p.id

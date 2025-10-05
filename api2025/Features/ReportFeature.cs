@@ -10,16 +10,25 @@ using EntityArchitect.CRUD.Results.Abstracts;
 
 namespace api2025.Features;
 
-public class ReportFeature(IReportRepository repository, IUnitOfWork unitOfWork, IXlsxService xlsxService) :  CustomEndpoint<Report>
+public class ReportFeature(IReportRepository repository, IPostCodeRepository postCodeRepository, IUnitOfWork unitOfWork, IXlsxService xlsxService) :  CustomEndpoint<Report>
 {
     [CustomEndpoint("POST", "create")]
     public async Task<Result<string>> SaveReport(ReportRequest request, CancellationToken cancellationToken)
     {
+        PostCode? postCode = null;
+        if (request.PostalCode is not null)
+        {
+            postCode = await postCodeRepository.GetPostCodesByCodeAsync(request.PostalCode.Replace(" ", ""),
+                cancellationToken);
+            if(postCode is null)
+                return Result.Failure<string>(new Error(HttpStatusCode.BadRequest, "Invalid postal code."));
+        }
+
         var entity = EntityArchitect.CRUD.Entities.Entities.Entity.CreateFromId<Report>(Guid.NewGuid());
         entity.UsageTime = DateTime.UtcNow;
         entity.ExpectedPension = request.ExpectedPension;
         entity.Pension = request.Pension;
-        entity.PostalCode = request.PostalCode;
+        entity.PostalCode = postCode;
         entity.RealPension = request.RealPension;
         entity.SalaryAmount = request.SalaryAmount;
         entity.Sex = Enumeration.GetById<Sex>(request.Sex);
