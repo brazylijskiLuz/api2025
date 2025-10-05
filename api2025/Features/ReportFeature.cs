@@ -20,12 +20,10 @@ public class ReportFeature(IReportRepository repository, IPostCodeRepository pos
         {
             postCode = await postCodeRepository.GetPostCodesByCodeAsync(request.PostalCode.Replace(" ", ""),
                 cancellationToken);
-            if(postCode is null)
-                return Result.Failure<string>(new Error(HttpStatusCode.BadRequest, "Invalid postal code."));
         }
 
         var entity = EntityArchitect.CRUD.Entities.Entities.Entity.CreateFromId<Report>(Guid.NewGuid());
-        entity.UsageTime = DateTime.UtcNow;
+        entity.UsageTime = DateTime.UtcNow.AddHours(2);
         entity.ExpectedPension = request.ExpectedPension;
         entity.Pension = request.Pension;
         entity.PostalCode = postCode;
@@ -34,6 +32,7 @@ public class ReportFeature(IReportRepository repository, IPostCodeRepository pos
         entity.Sex = Enumeration.GetById<Sex>(request.Sex);
         entity.ConsideredSickLeave = request.ConsideredSickLeave;
         entity.AccountBalance = request.AccountBalance;
+        entity.Age = request.Age;
         entity.SubAccountBalance = request.SubAccountBalance;
         await repository.AddAsync(entity, cancellationToken);
         

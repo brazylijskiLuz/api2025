@@ -10,5 +10,6 @@ public class ReportRequest
     public decimal SubAccountBalance { get; set; }
     public decimal Pension { get; set; }
     public decimal RealPension { get; set; }
+    public int Age { get; set; }
     public string? PostalCode { get; set; } = null;
 }

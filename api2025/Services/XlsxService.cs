@@ -12,13 +12,14 @@ public class XlsxService : IXlsxService
         worksheet.Cell(1, 1).Value = "Godzina użycia";
         worksheet.Cell(2, 1).Value = "Emerytura oczekiwana";
         worksheet.Cell(3, 1).Value = "Płeć";
-        worksheet.Cell(4, 1).Value = "Wysokość wynagrodzenia";
-        worksheet.Cell(5, 1).Value = "Czy uwzględniał okresy choroby";
-        worksheet.Cell(6, 1).Value = "Wysokość zgromadzonych środków na koncie";
-        worksheet.Cell(7, 1).Value = "Wysokość zgromadzonych środków na subkoncie";
-        worksheet.Cell(8, 1).Value = "Emerytura rzeczywista";
-        worksheet.Cell(9, 1).Value = "Emerytura urealniona";
-        worksheet.Cell(10, 1).Value = "Kod pocztowy";
+        worksheet.Cell(4, 1).Value = "Wiek";
+        worksheet.Cell(5, 1).Value = "Wysokość wynagrodzenia";
+        worksheet.Cell(6, 1).Value = "Czy uwzględniał okresy choroby";
+        worksheet.Cell(7, 1).Value = "Wysokość zgromadzonych środków na koncie";
+        worksheet.Cell(8, 1).Value = "Wysokość zgromadzonych środków na subkoncie";
+        worksheet.Cell(9, 1).Value = "Emerytura rzeczywista";
+        worksheet.Cell(10, 1).Value = "Emerytura urealniona";
+        worksheet.Cell(11, 1).Value = "Kod pocztowy";
 
 
         worksheet.Cell(1, 2).Value = DateTime.Now;
@@ -29,13 +30,14 @@ public class XlsxService : IXlsxService
             2 => "Kobieta",
             _ => throw new Exception("Niepoprawna wartość płci")
         };
-        worksheet.Cell(4, 2).Value = request.SalaryAmount;
-        worksheet.Cell(5, 2).Value = request.ConsideredSickLeave ? "Tak" : "Nie";
-        worksheet.Cell(6, 2).Value = request.AccountBalance;
-        worksheet.Cell(7, 2).Value = request.SubAccountBalance;
-        worksheet.Cell(8, 2).Value = request.Pension;
-        worksheet.Cell(9, 2).Value = request.RealPension;
-        worksheet.Cell(10, 2).Value = request.PostalCode ?? "Brak danych";
+        worksheet.Cell(4, 2).Value = request.Age;
+        worksheet.Cell(5, 2).Value = request.SalaryAmount;
+        worksheet.Cell(6, 2).Value = request.ConsideredSickLeave ? "Tak" : "Nie";
+        worksheet.Cell(7, 2).Value = request.AccountBalance;
+        worksheet.Cell(8, 2).Value = request.SubAccountBalance;
+        worksheet.Cell(9, 2).Value = request.Pension;
+        worksheet.Cell(10, 2).Value = request.RealPension;
+        worksheet.Cell(11, 2).Value = request.PostalCode ?? "Brak danych";
 
         worksheet.Columns().AdjustToContents();
 
@@ -143,14 +145,14 @@ public class XlsxService : IXlsxService
 
         var wsDetails = workbook.Worksheets.Add("Szczegóły");
 
-        int dRow = 1;
+        var dRow = 1;
         var headers = new[]
         {
-            "Lp", "Płeć", "Pensja", "Oczekiwana emerytura", "Rzeczywista emerytura",
-            "Stan konta", "Subkonto", "Chorobowe", "Kod pocztowy"
+            "Lp", "Płeć", "Wiek", "Pensja", "Oczekiwana emerytura", "Urealniona emerytura",
+            "Stan konta", "Subkonto", "Chorobowe", "Data Generowania", "Kod pocztowy"
         };
 
-        for (int i = 0; i < headers.Length; i++)
+        for (var i = 0; i < headers.Length; i++)
             wsDetails.Cell(dRow, i + 1).Value = headers[i];
 
         dRow++;
@@ -160,13 +162,15 @@ public class XlsxService : IXlsxService
         {
             wsDetails.Cell(dRow, 1).Value = index++;
             wsDetails.Cell(dRow, 2).Value = r.Sex.Id == 0 ? "Kobieta" : "Mężczyzna";
-            wsDetails.Cell(dRow, 3).Value = r.SalaryAmount;
-            wsDetails.Cell(dRow, 4).Value = r.ExpectedPension;
-            wsDetails.Cell(dRow, 5).Value = r.RealPension;
-            wsDetails.Cell(dRow, 6).Value = r.AccountBalance;
-            wsDetails.Cell(dRow, 7).Value = r.SubAccountBalance;
-            wsDetails.Cell(dRow, 8).Value = r.ConsideredSickLeave ? "Tak" : "Nie";
-            wsDetails.Cell(dRow++, 9).Value = r.PostalCode?.Code ?? "-";
+            wsDetails.Cell(dRow, 3).Value = r.Age;
+            wsDetails.Cell(dRow, 4).Value = r.SalaryAmount;
+            wsDetails.Cell(dRow, 5).Value = r.ExpectedPension;
+            wsDetails.Cell(dRow, 6).Value = r.RealPension;
+            wsDetails.Cell(dRow, 7).Value = r.AccountBalance;
+            wsDetails.Cell(dRow, 8).Value = r.SubAccountBalance;
+            wsDetails.Cell(dRow, 9).Value = r.ConsideredSickLeave ? "Tak" : "Nie";
+            wsDetails.Cell(dRow, 10).Value = r.UsageTime;
+            wsDetails.Cell(dRow++, 11).Value = r.PostalCode?.Code ?? "-";
         }
 
         wsDetails.Columns().AdjustToContents();

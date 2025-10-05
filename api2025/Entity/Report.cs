@@ -16,6 +16,7 @@ public class Report : EntityArchitect.CRUD.Entities.Entities.Entity
     public decimal SubAccountBalance { get; set; }
     public decimal Pension { get; set; }
     public decimal RealPension { get; set; }
+    public int Age { get; set; }
     
     [OneToMany<PostCode>(nameof(PostCode.Reports))]
     public PostCode? PostalCode { get; set; } 

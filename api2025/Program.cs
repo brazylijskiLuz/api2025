@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 using api2025.Repositories;
 using api2025.Services;
@@ -5,6 +6,7 @@ using EntityArchitect.CRUD;
 using EntityArchitect.CRUD.Actions;
 using EntityArchitect.CRUD.Authorization;
 using EntityArchitect.CRUD.Entities;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -26,6 +28,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+if (AppContext.TryGetSwitch("System.Globalization.Invariant", out var inv) && inv)
+{
+    Console.WriteLine("Globalization-Invariant = ON");
+}
+
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 app.UseHttpsRedirection();
 app.MapControllers();

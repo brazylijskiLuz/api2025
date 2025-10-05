@@ -4,3 +4,4 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 docker-compose.yml
+/api2025/wwwroot
