@@ -42,6 +42,9 @@
       <None Update="Queries\GetPostCodeByCode.sql">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Queries\GetAllProvinces.sql">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

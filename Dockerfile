@@ -5,6 +5,8 @@ EXPOSE 8080
 EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+RUN apt-get install -y libfontconfig1 libfreetype6 libharfbuzz0b
+
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["api2025/api2025.csproj", "api2025/"]
@@ -21,7 +23,6 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 RUN mkdir -p /app/wwwroot/reports && chmod -R 777 /app/wwwroot/reports
-RUN apt-get install -y libfontconfig1 libfreetype6 libharfbuzz0b
 
 
 ENTRYPOINT ["dotnet", "api2025.dll"]

@@ -3,5 +3,4 @@ using EntityArchitect.CRUD.Queries;
 
 namespace api2025.Queries.Definition;
 
-
-//public class GetAllProvinces() : Query<Report>("Queries/GetAll.sql", true);
+public class GetAllProvinces() : Query<Province>("Queries/GetAllProvinces.sql", true);

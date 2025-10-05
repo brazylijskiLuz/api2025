@@ -1,0 +1,1 @@
+SELECT id:GUID:KEY, name:STRING FROM province;
