@@ -44,7 +44,7 @@ public class XlsxService : IXlsxService
         var name = "reports/" + Guid.NewGuid() + ".xlsx";
         workbook.SaveAs("wwwroot/" + name);
 
-        return Task.FromResult("api.wnek.cc/" + name);
+        return Task.FromResult("https://api.wnek.cc/" + name);
     }
 
     public Task<string> GenerateXlsxReportsFromDateToDateAsync(List<Report> request,
@@ -180,6 +180,6 @@ public class XlsxService : IXlsxService
         var name = "reports/" + Guid.NewGuid() + ".xlsx";
         workbook.SaveAs("wwwroot/" + name);
 
-        return Task.FromResult("api.wnek.cc/" + name);
+        return Task.FromResult("https://api.wnek.cc/" + name);
     }
 }

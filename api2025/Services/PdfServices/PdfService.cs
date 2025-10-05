@@ -60,7 +60,7 @@ public class PdfService : IPdfService
                 });
 
                 // Stopka
-                page.Footer().AlignRight().Text($"Wygenerowano: {DateTime.Now:yyyy-MM-dd HH:mm}");
+                page.Footer().AlignRight().Text($"Wygenerowano: {DateTime.UtcNow.AddHours(2):yyyy-MM-dd HH:mm}");
             });
         })
         .GeneratePdf("wwwroot" + name);
